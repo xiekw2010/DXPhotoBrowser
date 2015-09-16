@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "DXPhotoBrowser"
-  s.version          = "0.1.2"
+  s.version          = "0.1.3"
   s.summary          = "Yet another light weight photo browser for displaying a series of photos."
 
 # This description is used to generate tags and improve search results.
