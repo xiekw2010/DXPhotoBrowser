@@ -6,7 +6,6 @@
 //
 
 #import "DXPullToDetailView.h"
-#import "DXShapeImageLayer.h"
 
 @implementation DXPullToDetailView {
     UIImageView *_arrow;

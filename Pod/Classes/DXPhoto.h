@@ -30,9 +30,9 @@ typedef void (^DXPhotoCompletionBlock)(id<DXPhoto>, UIImage *image);
  *  Uses animation for expand and shrink, if not provide default is screenBounds.
  *  Uses pixels size instead of point
  *
- *  @return an expectImageSize;
+ *  @return an expectLoadedImageSize;
  */
-- (CGSize)expectImageSize;
+- (CGSize)expectLoadedImageSize;
 
 @end
 

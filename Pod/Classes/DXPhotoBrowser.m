@@ -6,11 +6,6 @@
 //
 
 #import "DXPhotoBrowser.h"
-#import "DXPullToDetailView.h"
-#import "DXZoomingScrollView.h"
-#import "DXTapDetectingImageView.h"
-#import "UIView+DXScreenShot.h"
-#import "UIImage+DXAppleBlur.h"
 
 static const CGFloat kPadding = 10.0;
 
@@ -19,10 +14,24 @@ static inline NSTimeInterval durationToAnimate(CGFloat pointsToAnimate, CGFloat 
     return animationDuration;
 }
 
-static inline CGSize screenRatioSize() {
-    CGRect screenBounds = [UIScreen mainScreen].bounds;
-    return CGSizeMake(screenBounds.size.width,
-                      screenBounds.size.width * screenBounds.size.width / screenBounds.size.height);
+static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSize) {
+    CGFloat x, X, y, Y, rx, ry;
+    
+    x = originViewSize.width;
+    X = fullScreenSize.width;
+    y = originViewSize.height;
+    Y = fullScreenSize.height;
+    
+    // we use the bigger ratio
+    if (x / X > y / Y) {
+        rx = X;
+        ry = X / x * y;
+    } else {
+        ry = Y;
+        rx = Y / y * x;
+    }
+
+    return CGSizeMake(rx, ry);
 }
 
 @interface DXPhotoBrowser ()<UIScrollViewDelegate, DXZoomingScrollViewDelegate>
@@ -547,17 +556,18 @@ static inline CGSize screenRatioSize() {
     if (CGSizeEqualToSize(screenBound.size, CGSizeZero)) {
         id<DXPhoto> currentPhoto = [self photoAtIndex:_currentPageIndex];
         CGSize imageSize = CGSizeZero;
-        if ([currentPhoto respondsToSelector:@selector(expectImageSize)]) {
-            imageSize = [currentPhoto expectImageSize];
+        if ([currentPhoto respondsToSelector:@selector(expectLoadedImageSize)]) {
+            imageSize = [currentPhoto expectLoadedImageSize];
         }
         
         // last solution we use the screen size
-        if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
-            imageSize = screenRatioSize();
+        if (CGSizeEqualToSize(imageSize, CGSizeZero) && _sourceView) {
+            imageSize = screenRatioSize(_fullscreenView.bounds.size, _sourceView.bounds.size);
         }
         
         screenBound = CGRectMake(0, 0, imageSize.width, imageSize.height);
     }
+    
     UIImageView *resizableImageView;
     CGRect finalImageViewFrame;
     if (!CGSizeEqualToSize(screenBound.size, CGSizeZero) && _sourceView) {

@@ -17,7 +17,6 @@ static inline CGFloat radians(CGFloat degrees) {
 }
 
 #import "DXShapeImageLayer.h"
-#import "UIView+DXScreenShot.h"
 
 @implementation DXShapeImageLayer
 
