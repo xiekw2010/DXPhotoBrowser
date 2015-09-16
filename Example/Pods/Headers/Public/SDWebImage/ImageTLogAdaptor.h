@@ -1,0 +1,1 @@
+../../../SDWebImage/SDWebImage.framework/Versions/A/Headers/ImageTLogAdaptor.h

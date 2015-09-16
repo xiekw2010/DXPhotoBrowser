@@ -1,1 +1,1 @@
-../../../SDWebImage/SDWebImage/UIImage+MultiFormat.h
+../../../SDWebImage/SDWebImage.framework/Versions/A/Headers/UIImage+MultiFormat.h

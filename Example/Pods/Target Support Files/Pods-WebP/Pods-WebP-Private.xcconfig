@@ -1,0 +1,6 @@
+#include "Pods-WebP.xcconfig"
+FRAMEWORK_SEARCH_PATHS = ${PODS_WEBP_FRAMEWORK_SEARCH_PATHS}
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/WebP" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/DXPhotoBrowser" "${PODS_ROOT}/Headers/Public/DXRefresh" "${PODS_ROOT}/Headers/Public/Nimbus" "${PODS_ROOT}/Headers/Public/Placeholder" "${PODS_ROOT}/Headers/Public/RegexKitLite" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/WebP"
+OTHER_LDFLAGS = ${PODS_WEBP_OTHER_LDFLAGS} -ObjC
+PODS_ROOT = ${SRCROOT}

@@ -79,9 +79,11 @@ PODS:
   - Nimbus/WebController (1.2.0):
     - Nimbus/Core
   - Placeholder (0.1.1)
-  - SDWebImage (3.7.3):
-    - SDWebImage/Core (= 3.7.3)
-  - SDWebImage/Core (3.7.3)
+  - RegexKitLite (4.0)
+  - SDWebImage (3.7.0.39):
+    - RegexKitLite (= 4.0)
+    - WebP
+  - WebP (2.0.0)
 
 DEPENDENCIES:
   - DXPhotoBrowser (from `../`)
@@ -100,6 +102,8 @@ SPEC CHECKSUMS:
   DXRefresh: e024cf66d86adb146e393481f894099b89480ca7
   Nimbus: 074f2a2cf53f5f5fb25816d5ec829940c7439f9e
   Placeholder: 26dde190761012d504507395be830b0263f114cf
-  SDWebImage: 759e3ea2db01b0db3ac2189173f0e1e9f2e2612b
+  RegexKitLite: 320861de33c6897474ccfcf5f6973283c92fce33
+  SDWebImage: d18057f49bbe27027848cb27ae8c758a44f8d93b
+  WebP: 8536946a217e6b95cb49f7856a305ffcba58fa33
 
 COCOAPODS: 0.35.0

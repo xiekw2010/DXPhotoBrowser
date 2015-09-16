@@ -3,3 +3,11 @@
 #endif
 
 #import "Pods-environment.h"
+
+#ifdef DEBUG
+#define NSLog(...) NSLog(__VA_ARGS__)
+#else
+#define NSLog(...) {}
+#endif
+
+  

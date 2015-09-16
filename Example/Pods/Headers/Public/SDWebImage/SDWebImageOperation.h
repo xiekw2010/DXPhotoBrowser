@@ -1,1 +1,1 @@
-../../../SDWebImage/SDWebImage/SDWebImageOperation.h
+../../../SDWebImage/SDWebImage.framework/Versions/A/Headers/SDWebImageOperation.h

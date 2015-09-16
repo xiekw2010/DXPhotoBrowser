@@ -1,1 +1,1 @@
-../../../SDWebImage/SDWebImage/NSData+ImageContentType.h
+../../../SDWebImage/SDWebImage.framework/Versions/A/Headers/NSData+ImageContentType.h

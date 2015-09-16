@@ -87,7 +87,9 @@
 - (void)prepareForReuse {
     [_errorPlaceholder removeFromSuperview];
     _errorPlaceholder = nil;
-    [_photo cancelLoadImage];
+    if ([_photo respondsToSelector:@selector(cancelLoadImage)]) {
+        [_photo cancelLoadImage];
+    }
     _photo = nil;
     _imageView.image = nil;
     _index = NSUIntegerMax;
@@ -98,7 +100,6 @@
 - (void)setPhoto:(id<DXPhoto>)photo {
     _photo = photo;
     
-//    [self setupImageViewWithImage:[_photo placeholder]];
     [self showLoadingIndicator];
     __weak typeof(self) wself = self;
     [_photo loadImageWithProgressBlock:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -137,7 +138,15 @@
 
 - (void)showErrorIndicator {
     [self addSubview:self.errorPlaceholder];
-    _imageView.image = _photo.placeholder;
+    _imageView.image = [self placeholder];
+}
+
+- (UIImage *)placeholder {
+    if ([_photo respondsToSelector:@selector(placeholder)]) {
+        return [_photo placeholder];
+    }
+    
+    return nil;
 }
 
 - (void)setMaxMinZoomScalesForCurrentBounds {

@@ -16,14 +16,15 @@ typedef void (^DXPhotoCompletionBlock)(id<DXPhoto>, UIImage *image);
 
 @required
 
-- (UIImage *)placeholder;
-
 - (void)loadImageWithProgressBlock:(DXPhotoProgressBlock)progressBlock
                    completionBlock:(DXPhotoCompletionBlock)completionBlock;
 
-- (void)cancelLoadImage;
 
 @optional
+
+- (UIImage *)placeholder;
+
+- (void)cancelLoadImage;
 
 /**
  *  Uses animation for expand and shrink, if not provide default is screenBounds.

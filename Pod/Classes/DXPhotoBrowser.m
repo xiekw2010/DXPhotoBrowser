@@ -529,6 +529,7 @@ static inline CGSize screenRatioSize() {
     if ([currentPhoto respondsToSelector:@selector(placeholder)]) {
         _scaleImage = [currentPhoto placeholder];
     }
+    
     if (!_scaleImage) {
         _scaleImage = [_sourceView dx_screenShotImageAfterScreenUpdates:NO];
     }
@@ -657,7 +658,11 @@ static inline CGSize screenRatioSize() {
 }
 
 - (void)performHideAnimatioWithScrollView:(DXZoomingScrollView *)scrollView withDuration:(CGFloat)duration {
-    UIImage *imageFromView = [scrollView.photo placeholder];
+    UIImage *imageFromView = nil;
+    
+    if ([scrollView.photo respondsToSelector:@selector(placeholder)]) {
+        imageFromView = [scrollView.photo placeholder];
+    }
     
     CGRect screenBound = [[[self pageAtIndex:_currentPageIndex] imageView] frame];
     UIImageView *resizableImageView;
