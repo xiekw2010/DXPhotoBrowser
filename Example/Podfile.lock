@@ -1,0 +1,105 @@
+PODS:
+  - AFNetworking (2.6.0):
+    - AFNetworking/NSURLConnection (= 2.6.0)
+    - AFNetworking/NSURLSession (= 2.6.0)
+    - AFNetworking/Reachability (= 2.6.0)
+    - AFNetworking/Security (= 2.6.0)
+    - AFNetworking/Serialization (= 2.6.0)
+    - AFNetworking/UIKit (= 2.6.0)
+  - AFNetworking/NSURLConnection (2.6.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.0)
+  - AFNetworking/Security (2.6.0)
+  - AFNetworking/Serialization (2.6.0)
+  - AFNetworking/UIKit (2.6.0):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - DXPhotoBrowser (0.1.0):
+    - DXPhotoBrowser/ImageUtils (= 0.1.0)
+    - DXPhotoBrowser/InternalViews (= 0.1.0)
+  - DXPhotoBrowser/ImageUtils (0.1.0)
+  - DXPhotoBrowser/InternalViews (0.1.0)
+  - DXRefresh (0.1.0)
+  - Nimbus (1.2.0):
+    - Nimbus/AttributedLabel (= 1.2.0)
+    - Nimbus/Badge (= 1.2.0)
+    - Nimbus/Collections (= 1.2.0)
+    - Nimbus/Collections (= 1.2.0)
+    - Nimbus/Core (= 1.2.0)
+    - Nimbus/CSS (= 1.2.0)
+    - Nimbus/Interapp (= 1.2.0)
+    - Nimbus/Launcher (= 1.2.0)
+    - Nimbus/Models (= 1.2.0)
+    - Nimbus/NetworkControllers (= 1.2.0)
+    - Nimbus/NetworkImage (= 1.2.0)
+    - Nimbus/Overview (= 1.2.0)
+    - Nimbus/PagingScrollView (= 1.2.0)
+    - Nimbus/Photos (= 1.2.0)
+    - Nimbus/Textfield (= 1.2.0)
+    - Nimbus/WebController (= 1.2.0)
+  - Nimbus/AttributedLabel (1.2.0):
+    - Nimbus/Core
+  - Nimbus/Badge (1.2.0):
+    - Nimbus/Core
+  - Nimbus/Collections (1.2.0):
+    - Nimbus/Core
+  - Nimbus/Core (1.2.0)
+  - Nimbus/CSS (1.2.0):
+    - AFNetworking (~> 2.1)
+    - Nimbus/Core
+    - Nimbus/Textfield
+  - Nimbus/Interapp (1.2.0):
+    - Nimbus/Core
+  - Nimbus/Launcher (1.2.0):
+    - Nimbus/Core
+    - Nimbus/PagingScrollView
+  - Nimbus/Models (1.2.0):
+    - Nimbus/Core
+  - Nimbus/NetworkControllers (1.2.0):
+    - Nimbus/Core
+  - Nimbus/NetworkImage (1.2.0):
+    - AFNetworking (~> 2.1)
+    - Nimbus/Core
+  - Nimbus/Overview (1.2.0):
+    - Nimbus/Core
+    - Nimbus/Models
+  - Nimbus/PagingScrollView (1.2.0):
+    - Nimbus/Core
+  - Nimbus/Photos (1.2.0):
+    - Nimbus/Core
+    - Nimbus/PagingScrollView
+  - Nimbus/Textfield (1.2.0):
+    - Nimbus/Core
+  - Nimbus/WebController (1.2.0):
+    - Nimbus/Core
+  - Placeholder (0.1.1)
+  - SDWebImage (3.7.3):
+    - SDWebImage/Core (= 3.7.3)
+  - SDWebImage/Core (3.7.3)
+
+DEPENDENCIES:
+  - DXPhotoBrowser (from `../`)
+  - DXRefresh
+  - Nimbus
+  - Placeholder
+  - SDWebImage
+
+EXTERNAL SOURCES:
+  DXPhotoBrowser:
+    :path: ../
+
+SPEC CHECKSUMS:
+  AFNetworking: a3151c2bfb2edb038b8ce0da89471b488dcfb96f
+  DXPhotoBrowser: e470891785cff8dd50f0510fd2fdbfed69c48005
+  DXRefresh: e024cf66d86adb146e393481f894099b89480ca7
+  Nimbus: 074f2a2cf53f5f5fb25816d5ec829940c7439f9e
+  Placeholder: 26dde190761012d504507395be830b0263f114cf
+  SDWebImage: 759e3ea2db01b0db3ac2189173f0e1e9f2e2612b
+
+COCOAPODS: 0.35.0

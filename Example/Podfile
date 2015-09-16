@@ -1,0 +1,5 @@
+pod 'DXPhotoBrowser', :path => '../'
+pod 'SDWebImage'
+pod 'Placeholder'
+pod 'Nimbus'
+pod 'DXRefresh'
