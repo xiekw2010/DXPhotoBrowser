@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/InternalViews/DXTapDetectingImageView.h
+../../../../../Pod/Classes/DXTapDetectingImageView.h

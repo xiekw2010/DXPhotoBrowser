@@ -6,6 +6,7 @@
 //
 
 #import "DXErrorIndicator.h"
+#import "DXShapeImageLayer.h"
 
 @implementation DXErrorIndicator
 

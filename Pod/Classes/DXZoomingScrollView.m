@@ -6,6 +6,11 @@
 //
 
 #import "DXZoomingScrollView.h"
+#import "DXErrorIndicator.h"
+#import "DXTapDetectingImageView.h"
+#import "DXTapDetectingView.h"
+#import "DXPhoto.h"
+
 
 @interface DXZoomingScrollView ()<DXTapDetectingImageViewDelegate, DXTapDetectingViewDelegate> {
     DXTapDetectingView *_tapView; // for background taps

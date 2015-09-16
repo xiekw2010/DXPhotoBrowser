@@ -8,7 +8,6 @@
 #import <UIKit/UIKit.h>
 
 @class DXZoomingScrollView, DXTapDetectingImageView;
-
 @protocol DXPhoto;
 
 @protocol DXZoomingScrollViewDelegate <NSObject>

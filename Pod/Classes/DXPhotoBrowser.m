@@ -6,6 +6,12 @@
 //
 
 #import "DXPhotoBrowser.h"
+#import "UIView+DXScreenShot.h"
+#import "UIImage+DXAppleBlur.h"
+#import "DXPullToDetailView.h"
+#import "DXZoomingScrollView.h"
+#import "DXTapDetectingImageView.h"
+#import "DXTapDetectingView.h"
 
 static const CGFloat kPadding = 10.0;
 

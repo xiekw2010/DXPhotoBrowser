@@ -20,11 +20,11 @@ PODS:
   - AFNetworking/UIKit (2.6.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - DXPhotoBrowser (0.1.0):
-    - DXPhotoBrowser/ImageUtils (= 0.1.0)
-    - DXPhotoBrowser/InternalViews (= 0.1.0)
-  - DXPhotoBrowser/ImageUtils (0.1.0)
-  - DXPhotoBrowser/InternalViews (0.1.0)
+  - DXPhotoBrowser (0.1.2):
+    - DXPhotoBrowser/ImageUtils (= 0.1.2)
+    - DXPhotoBrowser/InternalViews (= 0.1.2)
+  - DXPhotoBrowser/ImageUtils (0.1.2)
+  - DXPhotoBrowser/InternalViews (0.1.2)
   - DXRefresh (0.1.0)
   - Nimbus (1.2.0):
     - Nimbus/AttributedLabel (= 1.2.0)
@@ -98,7 +98,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: a3151c2bfb2edb038b8ce0da89471b488dcfb96f
-  DXPhotoBrowser: e470891785cff8dd50f0510fd2fdbfed69c48005
+  DXPhotoBrowser: c5d7b7d8a7799db928e1a6b5ef628dc7f1113e80
   DXRefresh: e024cf66d86adb146e393481f894099b89480ca7
   Nimbus: 074f2a2cf53f5f5fb25816d5ec829940c7439f9e
   Placeholder: 26dde190761012d504507395be830b0263f114cf

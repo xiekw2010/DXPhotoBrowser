@@ -28,20 +28,11 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '6.0'
   s.requires_arc = true
 
-  s.source_files = 'Pod/Classes/*{h,m,c}'
+  s.source_files = 'Pod/Classes/*{h,m}'
   s.resource_bundles = {
     'DXPhotoBrowser' => ['Pod/Assets/*.png']
   }
 
-  s.public_header_files = 'Pod/Classes/**/*.h'
-
-  s.subspec 'ImageUtils' do |cc|
-   cc.source_files = 'Pod/Classes/ImageUtils'
-  end
-
-  s.subspec 'InternalViews' do |dd|
-   dd.source_files = 'Pod/Classes/InternalViews'
-  end
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Accelerate'
   # s.dependency 'AFNetworking', '~> 2.3'

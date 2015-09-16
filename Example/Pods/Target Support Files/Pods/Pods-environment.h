@@ -52,19 +52,19 @@
 #define COCOAPODS_POD_AVAILABLE_DXPhotoBrowser
 #define COCOAPODS_VERSION_MAJOR_DXPhotoBrowser 0
 #define COCOAPODS_VERSION_MINOR_DXPhotoBrowser 1
-#define COCOAPODS_VERSION_PATCH_DXPhotoBrowser 0
+#define COCOAPODS_VERSION_PATCH_DXPhotoBrowser 2
 
 // DXPhotoBrowser/ImageUtils
 #define COCOAPODS_POD_AVAILABLE_DXPhotoBrowser_ImageUtils
 #define COCOAPODS_VERSION_MAJOR_DXPhotoBrowser_ImageUtils 0
 #define COCOAPODS_VERSION_MINOR_DXPhotoBrowser_ImageUtils 1
-#define COCOAPODS_VERSION_PATCH_DXPhotoBrowser_ImageUtils 0
+#define COCOAPODS_VERSION_PATCH_DXPhotoBrowser_ImageUtils 2
 
 // DXPhotoBrowser/InternalViews
 #define COCOAPODS_POD_AVAILABLE_DXPhotoBrowser_InternalViews
 #define COCOAPODS_VERSION_MAJOR_DXPhotoBrowser_InternalViews 0
 #define COCOAPODS_VERSION_MINOR_DXPhotoBrowser_InternalViews 1
-#define COCOAPODS_VERSION_PATCH_DXPhotoBrowser_InternalViews 0
+#define COCOAPODS_VERSION_PATCH_DXPhotoBrowser_InternalViews 2
 
 // DXRefresh
 #define COCOAPODS_POD_AVAILABLE_DXRefresh

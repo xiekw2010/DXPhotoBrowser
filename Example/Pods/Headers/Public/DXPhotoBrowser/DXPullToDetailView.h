@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/InternalViews/DXPullToDetailView.h
+../../../../../Pod/Classes/DXPullToDetailView.h

@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/InternalViews/DXZoomingScrollView.h
+../../../../../Pod/Classes/DXZoomingScrollView.h

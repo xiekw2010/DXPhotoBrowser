@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/InternalViews/DXErrorIndicator.h
+../../../../../Pod/Classes/DXErrorIndicator.h
