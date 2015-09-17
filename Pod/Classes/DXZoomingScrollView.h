@@ -22,6 +22,7 @@
 @property (nonatomic, strong) id<DXPhoto> photo;
 @property (nonatomic, weak, readonly) id<DXZoomingScrollViewDelegate>zoomDelegate;
 @property (nonatomic, strong, readonly) DXTapDetectingImageView *imageView;
+@property (nonatomic, strong) UIImage *placeholder;
 
 - (id)initWithDelegate:(id<DXZoomingScrollViewDelegate>)delegate;
 - (void)prepareForReuse;

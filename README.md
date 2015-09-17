@@ -43,6 +43,8 @@ Yet another photo browser of displaying images.
 	    _operation = nil;
 	}
 
+For more details best practises, check [DXSimplePhoto](https://github.com/xiekw2010/DXPhotoBrowser-DXSimplePhoto).
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.

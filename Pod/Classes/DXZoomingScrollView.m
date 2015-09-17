@@ -101,7 +101,9 @@
 - (void)setPhoto:(id<DXPhoto>)photo {
     _photo = photo;
     
+    [self setupImageViewWithImage:[self placeholder]];
     [self showLoadingIndicator];
+    
     __weak typeof(self) wself = self;
     [_photo loadImageWithProgressBlock:^(NSInteger receivedSize, NSInteger expectedSize) {
         [wself updateLoadingIndicatorWithProgress:(CGFloat)(receivedSize/expectedSize)];
@@ -139,15 +141,20 @@
 
 - (void)showErrorIndicator {
     [self addSubview:self.errorPlaceholder];
-    _imageView.image = [self placeholder];
+    _imageView.image = nil;
 }
 
 - (UIImage *)placeholder {
+    UIImage *placeholder = nil;
     if ([_photo respondsToSelector:@selector(placeholder)]) {
-        return [_photo placeholder];
+        placeholder = [_photo placeholder];
     }
     
-    return nil;
+    if (!placeholder) {
+        placeholder = _placeholder;
+    }
+    
+    return placeholder;
 }
 
 - (void)setMaxMinZoomScalesForCurrentBounds {

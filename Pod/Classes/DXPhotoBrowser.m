@@ -23,10 +23,12 @@ static inline NSTimeInterval durationToAnimate(CGFloat pointsToAnimate, CGFloat 
 static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSize) {
     CGFloat x, X, y, Y, rx, ry;
     
-    x = originViewSize.width;
-    X = fullScreenSize.width;
-    y = originViewSize.height;
-    Y = fullScreenSize.height;
+    x = originViewSize.width, X = fullScreenSize.width;
+    y = originViewSize.height, Y = fullScreenSize.height;
+    
+    if (x == 0 || y == 0) {
+        return CGSizeZero;
+    }
     
     // we use the bigger ratio
     if (x / X > y / Y) {
@@ -36,28 +38,31 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
         ry = Y;
         rx = Y / y * x;
     }
-
+    
+    if (x <= X) {
+        rx = x;
+        if (y <= Y) {
+            ry = y;
+        } else {
+            ry = rx / x * y;
+        }
+    }
+    
     return CGSizeMake(rx, ry);
 }
 
 @interface DXPhotoBrowser ()<UIScrollViewDelegate, DXZoomingScrollViewDelegate>
 
 @property (nonatomic, weak) UIView *sourceView;
-@property (nonatomic, weak) UIImage *scaleImage;
 @property (nonatomic, strong, readonly) UIView *fullcreenView;
 @property (nonatomic, strong, readonly) UIControl *backgroundView;
 
 // if current photos.count > 10, it will hidden
 @property (nonatomic, strong) UIPageControl *pageControl;
-/**
- *  Default is yes, if under iOS7, then not
- */
 
-@property (nonatomic, assign, getter=isBouncingAnimation) BOOL bouncingAnimation;
 /**
  *  Default is 0.3
  */
-
 @property (nonatomic, assign) CGFloat flyInAnimationDuration;
 
 /**
@@ -74,7 +79,6 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
     UIScrollView *_pagingScrollView;
     NSMutableSet *_visiblePages, *_recycledPages;
     NSUInteger _currentPageIndex;
-    NSUInteger _showStartIndex;
     NSUInteger _photoCount;
     DXPullToDetailView *_pullToRightControl;
     UIPanGestureRecognizer *_dismissPanGesture;
@@ -89,6 +93,9 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
         unsigned int delegateImpDidHideObj:1;
         unsigned int delegateImpTriggerPullToRight:1;
     } _delegateFlags;
+    
+    UIImage *_fakeAnimationPlaceholder;
+    UIImageView *_fakeAnimationImageView;
 }
 
 @synthesize fullcreenView = _fullscreenView, backgroundView = _backgroundView;
@@ -107,8 +114,7 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
 }
 
 - (void)commonInit {
-    UIViewAutoresizing autoresizingMask
-    = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    UIViewAutoresizing autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     
     self.flyInAnimationDuration = 0.3;
     self.flyOutAnimationDuration = 0.3;
@@ -265,10 +271,8 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
     // Ignore padding as paging bounces encroach on that
     // and lead to false page loads
     CGRect visibleBounds = _pagingScrollView.bounds;
-    NSInteger firstIndex
-    = (NSInteger)floorf((CGRectGetMinX(visibleBounds) + kPadding * 2) / CGRectGetWidth(visibleBounds));
-    NSInteger lastIndex
-    = (NSInteger)floorf((CGRectGetMaxX(visibleBounds) - kPadding * 2 - 1) / CGRectGetWidth(visibleBounds));
+    NSInteger firstIndex = (NSInteger)floorf((CGRectGetMinX(visibleBounds) + kPadding * 2) / CGRectGetWidth(visibleBounds));
+    NSInteger lastIndex = (NSInteger)floorf((CGRectGetMaxX(visibleBounds) - kPadding * 2 - 1) / CGRectGetWidth(visibleBounds));
     
     if (firstIndex < 0) firstIndex = 0;
     if (firstIndex > [self numberOfPhotos] - 1) firstIndex = [self numberOfPhotos] - 1;
@@ -324,6 +328,15 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
 - (void)configurePage:(DXZoomingScrollView *)page forIndex:(NSUInteger)index {
     page.frame = [self frameForPageAtIndex:index];
     page.index = index;
+    
+    if (index == _startShowingIndex) {
+        id<DXPhoto> photo = [self photoAtIndex:index];
+        UIImage *placeholder = [photo respondsToSelector:@selector(placeholder)] ? [photo placeholder] : nil;
+        if (!placeholder && _fakeAnimationPlaceholder) {
+            placeholder = _fakeAnimationPlaceholder;
+            page.placeholder = placeholder;
+        }
+    }
     page.photo = [self photoAtIndex:index];
 }
 
@@ -333,7 +346,7 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
         cellObj = _photosArray[index];
     }
     if (![cellObj conformsToProtocol:@protocol(DXPhoto)]) {
-        NSLog(@"HRSimplePhotoBrowser photos array object at index %lu does conforms to protocol <HRPhoto>", (unsigned long)index);
+        NSLog(@"DXPhotoBrowser photos array object at index %lu does conforms to protocol <HRPhoto>", (unsigned long)index);
         return nil;
     }
     return cellObj;
@@ -497,16 +510,17 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
     _startShowingIndex = index;
     
     // setup the root view
-    UIView *rootViewControllerView
-        = [[UIApplication sharedApplication] keyWindow].rootViewController.view;
+    UIView *rootViewControllerView = [[UIApplication sharedApplication] keyWindow].rootViewController.view;
     [_fullscreenView setFrame:[rootViewControllerView bounds]];
     [rootViewControllerView addSubview:_fullscreenView];
     [_fullscreenView addGestureRecognizer:_dismissPanGesture];
 
     // Stash away original thumbnail image view information
-    _sourceView = thumbnailView;
-    _sourceViewHereFrame = [_sourceView.superview convertRect:_sourceView.frame toView:_fullscreenView];
-    _sourceView.hidden = YES;
+    if (thumbnailView) {
+        _sourceView = thumbnailView;
+        _sourceViewHereFrame = [_sourceView.superview convertRect:_sourceView.frame toView:_fullscreenView];
+        _sourceView.hidden = YES;
+    }
     
     // Configure the background view, iOS6的截图效率太低，这里使用半透明黑色背景替代
     UIColor *backgroundColor;
@@ -524,6 +538,7 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
     
     // reset the page scrollView
     [self resetPagingScrollView];
+    CGRect finalFakeAnimationRect = [self createFakeAnimationImageViewIfNeed];
     [self tilePagesAtIndex:index];
     [_fullscreenView addSubview:_pagingScrollView];
     
@@ -538,74 +553,87 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
     
     // pagecontrol
     _pageControl.hidden = _photosArray.count > 10;
-    
-    // Get the target image for animation
-    id<DXPhoto> currentPhoto = [self photoAtIndex:_currentPageIndex];
-    if ([currentPhoto respondsToSelector:@selector(placeholder)]) {
-        _scaleImage = [currentPhoto placeholder];
-    }
-    
-    if (!_scaleImage) {
-        _scaleImage = [_sourceView dx_screenShotImageAfterScreenUpdates:NO];
-    }
 
-    [self performAnimateFlyIn];
+    [self performAnimateFlyInWithFakeAnimationImageViewDestinationRect:finalFakeAnimationRect];
 }
 
-- (void)performAnimateFlyIn {
-    UIImage *imageFromView = _scaleImage;
+- (CGRect)createFakeAnimationImageViewIfNeed {
+    if (!_sourceView) return CGRectZero;
     
-    // The destination imageSize, if the image has loaded we use it
-    CGRect screenBound = [[[self pageAtIndex:_currentPageIndex] imageView] frame];
-    
-    // otherwise we use the protocol size
-    if (CGSizeEqualToSize(screenBound.size, CGSizeZero)) {
-        id<DXPhoto> currentPhoto = [self photoAtIndex:_currentPageIndex];
-        CGSize imageSize = CGSizeZero;
-        if ([currentPhoto respondsToSelector:@selector(expectLoadedImageSize)]) {
-            imageSize = [currentPhoto expectLoadedImageSize];
-        }
-        
-        // last solution we use the screen size
-        if (CGSizeEqualToSize(imageSize, CGSizeZero) && _sourceView) {
-            imageSize = screenRatioSize(_fullscreenView.bounds.size, _sourceView.bounds.size);
-        }
-        
-        screenBound = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    UIImage *scaleImage;
+    id<DXPhoto> startPhoto = [self photoAtIndex:_startShowingIndex];
+    if ([startPhoto respondsToSelector:@selector(placeholder)]) {
+        scaleImage = [startPhoto placeholder];
     }
+    if (!scaleImage) {
+        scaleImage = [_sourceView dx_screenShotImageAfterScreenUpdates:NO];
+    }
+
+    // The destination imageSize, if the image has loaded we use it
+    CGSize imageSize = CGSizeZero;
+    if ([startPhoto respondsToSelector:@selector(expectLoadedImageSize)]) {
+        imageSize = [startPhoto expectLoadedImageSize];
+        imageSize = screenRatioSize(_fullscreenView.bounds.size, imageSize);
+    }
+    
+    // last solution we use the screen size
+    if (CGSizeEqualToSize(imageSize, CGSizeZero) && _sourceView) {
+        imageSize = screenRatioSize(_fullscreenView.bounds.size, _sourceView.bounds.size);
+    }
+    
+    CGRect screenBound = CGRectMake(0, 0, imageSize.width, imageSize.height);
     
     UIImageView *resizableImageView;
     CGRect finalImageViewFrame;
     if (!CGSizeEqualToSize(screenBound.size, CGSizeZero) && _sourceView) {
         CGFloat screenWidth = screenBound.size.width;
         CGFloat screenHeight = screenBound.size.height;
-        resizableImageView = [[UIImageView alloc] initWithImage:imageFromView];
+        
+        resizableImageView = [[UIImageView alloc] initWithImage:scaleImage];
         resizableImageView.frame = _sourceViewHereFrame;
         resizableImageView.clipsToBounds = YES;
         resizableImageView.contentMode = UIViewContentModeScaleAspectFill;
         [_fullscreenView addSubview:resizableImageView];
         
         finalImageViewFrame = CGRectMake((CGRectGetWidth(_fullscreenView.bounds) - screenWidth) * 0.5,
-                                                (CGRectGetHeight(_fullscreenView.bounds) - screenHeight) * 0.5,
-                                                screenWidth,
-                                                screenHeight);
+                                         (CGRectGetHeight(_fullscreenView.bounds) - screenHeight) * 0.5,
+                                         screenWidth,
+                                         screenHeight);
+        
+        UIImage *placeholder = [startPhoto respondsToSelector:@selector(placeholder)] ? [startPhoto placeholder] : nil;
+        if (!placeholder) {
+            UIImageView *imageForDest = [[UIImageView alloc] initWithFrame:finalImageViewFrame];
+            imageForDest.image = scaleImage;
+            imageForDest.clipsToBounds = YES;
+            imageForDest.contentMode = UIViewContentModeScaleAspectFill;
+            _fakeAnimationPlaceholder = [imageForDest dx_screenShotImageAfterScreenUpdates:YES];
+        }
     }
     
+    _fakeAnimationImageView = resizableImageView;
+    
+    return finalImageViewFrame;
+}
+
+- (void)performAnimateFlyInWithFakeAnimationImageViewDestinationRect:(CGRect)destRect {
     if (_delegateFlags.delegateImpWillShowObj) {
         [_delegate simplePhotoBrowserWillShow:self];
     }
     
     dispatch_block_t animation = ^{
         [_backgroundView setAlpha:1.0];
-        if (resizableImageView) {
-            resizableImageView.layer.frame = finalImageViewFrame;
+        if (_fakeAnimationImageView) {
+            _fakeAnimationImageView.layer.frame = destRect;
         } else {
             [_pagingScrollView setAlpha:1.0];
         }
     };
     
     dispatch_block_t completion = ^{
-        [resizableImageView removeFromSuperview];
+        [_fakeAnimationImageView removeFromSuperview];
+        _fakeAnimationImageView = nil;
+        _fakeAnimationPlaceholder = nil;
+        
         [_pagingScrollView setAlpha:1.0];
         if (_delegateFlags.delegateImpDidShowObj) {
             [_delegate simplePhotoBrowserDidShow:self];
@@ -657,7 +685,6 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
         [_backgroundView setAlpha:0];
     } completion:^(BOOL finished) {
         _sourceView.hidden = NO;
-        _scaleImage = nil;
         [_pageControl removeFromSuperview];
         [_pagingScrollView removeFromSuperview];
         [_backgroundView removeFromSuperview];
@@ -678,6 +705,10 @@ static inline CGSize screenRatioSize(CGSize fullScreenSize, CGSize originViewSiz
     
     if ([scrollView.photo respondsToSelector:@selector(placeholder)]) {
         imageFromView = [scrollView.photo placeholder];
+    }
+    
+    if (!imageFromView) {
+        imageFromView = [scrollView placeholder];
     }
     
     CGRect screenBound = [[[self pageAtIndex:_currentPageIndex] imageView] frame];

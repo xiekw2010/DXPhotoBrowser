@@ -31,6 +31,8 @@
 
 @property (nonatomic, weak) id<DXPhotoBrowserDelegate> delegate;
 
+@property (nonatomic, assign, getter=isBouncingAnimation) BOOL bouncingAnimation;
+
 /**
  *  The showing photo api
  *
